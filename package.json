@@ -1,4 +1,5 @@
 {
+  "homepage": "http://martink-rsa.github.io/Random-Quote-Machine",
   "name": "random-quote-machine",
   "version": "0.1.0",
   "private": true,
@@ -16,6 +17,8 @@
     "redux": "^4.0.5"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -45,6 +48,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "gh-pages": "^2.2.0",
     "prettier": "^1.19.1"
   }
 }
