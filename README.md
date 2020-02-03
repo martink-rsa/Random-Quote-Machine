@@ -1,6 +1,8 @@
 # Random Quote Machine
 
-An App which will display a random quote each time the button is clicked.
+[Link to Demo](https://martink-rsa.github.io/Random-Quote-Machine/)
+
+An App which will display a random quote each time the button is clicked. 
 
 ![Screenshot](https://user-images.githubusercontent.com/52622303/73676214-a983bb00-46bc-11ea-9197-0489ded03ca8.png)
 
