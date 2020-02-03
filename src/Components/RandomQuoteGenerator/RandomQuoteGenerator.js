@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
 import Container from '@material-ui/core/Container';
@@ -47,7 +47,12 @@ const store = createStore(quoteReducer);
 // React:
 
 function Presentation(props) {
-  console.log(props);
+  const { getNewQuote } = props;
+
+  useEffect(() => {
+    getNewQuote();
+  }, [getNewQuote]);
+
   return (
     <Container maxWidth="sm">
       <Box my={4}>
