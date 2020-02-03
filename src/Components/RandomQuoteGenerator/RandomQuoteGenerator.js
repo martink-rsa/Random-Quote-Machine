@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
 import Container from '@material-ui/core/Container';
@@ -7,6 +8,25 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import quotesList from '../../quotes';
+import './RandomQuoteGenerator.css';
+
+// CSS
+
+const useStyles = makeStyles(() => ({
+  root: {
+    padding: 0,
+    margin: 0,
+    width: '100%',
+    height: '100%',
+  },
+  text: {
+    color: 'red',
+  },
+  author: {
+    color: 'green',
+    textAlign: 'right',
+  },
+}));
 
 // Utility
 
@@ -47,7 +67,11 @@ const store = createStore(quoteReducer);
 // React:
 
 function Presentation(props) {
-  const { getNewQuote } = props;
+  const classes = useStyles();
+  const {
+    getNewQuote,
+    quote: { text, author },
+  } = props;
 
   useEffect(() => {
     getNewQuote();
@@ -57,15 +81,26 @@ function Presentation(props) {
     <Container maxWidth="sm">
       <Box my={4}>
         <Paper id="quote-box">
-          <Typography id="text" variant="body1" gutterBottom>
-            {props.quote.text}
+          <Typography
+            id="text"
+            variant="h4"
+            className={classes.text}
+            gutterBottom
+          >
+            {text}
           </Typography>
-          <Typography id="author" variant="body1" gutterBottom>
-            {props.quote.author}
+          <Typography
+            id="author"
+            variant="h6"
+            className={classes.author}
+            gutterBottom
+          >
+            {'- '}
+            {author}
           </Typography>
           <Button
             id="new-quote"
-            onClick={props.getNewQuote}
+            onClick={getNewQuote}
             variant="contained"
             color="primary"
           >
@@ -81,13 +116,16 @@ const mapStateToProps = state => {
   return { quote: state };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = { getNewQuote: newQuote };
+
+/* const mapDispatchToProps = dispatch => {
   return {
     getNewQuote: () => {
       dispatch(newQuote());
     },
   };
 };
+ */
 
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)(Presentation);
 
