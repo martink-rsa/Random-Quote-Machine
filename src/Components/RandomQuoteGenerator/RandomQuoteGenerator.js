@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { Provider, connect } from 'react-redux';
 import { createStore } from 'redux';
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import quotesList from '../../quotes';
 import './RandomQuoteGenerator.css';
 
@@ -19,20 +20,60 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     height: '100%',
   },
+  mainWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    height: '100%',
+  },
   text: {
-    color: 'red',
+    color: 'white',
+    fontSize: '2.5rem',
+    lineHeight: '5rem',
+    fontFamily: "'Roboto Condensed', sans-serif",
   },
   author: {
-    color: 'green',
-    textAlign: 'right',
+    color: 'white',
+    fontSize: '2rem',
+    textTransform: 'uppercase',
+    fontFamily: `'Bebas Neue', cursive`,
+  },
+  quoteWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%',
+  },
+  actionWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: '200px',
+    width: '100%',
+    alignSelf: 'flex-end',
+    justifySelf: 'flex-end',
   },
 }));
 
+const ColorButton = withStyles(() => ({
+  root: {
+    fontFamily: "'Roboto Condensed', sans-serif",
+    color: 'white',
+    backgroundColor: 'transparent',
+    border: '3px solid white',
+    fontSize: 16,
+    '&:hover': {},
+  },
+}))(Button);
+
 // Utility
 
-const randNumGenerator = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+const randNumGenerator = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
 
 const getNewQuote = () => {
   const newQuoteIndex = randNumGenerator(0, quotesList.length);
@@ -77,36 +118,47 @@ function Presentation(props) {
     getNewQuote();
   }, [getNewQuote]);
 
+  const quotedSharing = `"${text}" - ${author}`;
   return (
-    <Container maxWidth="sm">
-      <Box my={4}>
-        <Paper id="quote-box">
-          <Typography
-            id="text"
-            variant="h4"
-            className={classes.text}
-            gutterBottom
-          >
-            {text}
-          </Typography>
-          <Typography
-            id="author"
-            variant="h6"
-            className={classes.author}
-            gutterBottom
-          >
-            {'- '}
-            {author}
-          </Typography>
-          <Button
-            id="new-quote"
-            onClick={getNewQuote}
-            variant="contained"
-            color="primary"
-          >
-            New Quote
-          </Button>
-        </Paper>
+    <Container id="quote-box" maxWidth="sm" className={classes.mainWrapper}>
+      <Box my={4} className={classes.quoteWrapper}>
+        <Typography
+          id="text"
+          variant="body1"
+          className={classes.text}
+          gutterBottom
+        >
+          {text}
+        </Typography>
+        <Typography
+          id="author"
+          variant="body1"
+          className={classes.author}
+          gutterBottom
+        >
+          {author}
+        </Typography>
+      </Box>
+      <Box my={4} className={classes.actionWrapper}>
+        <ColorButton
+          id="tweet-quote"
+          target="_blank"
+          href={`https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=${encodeURIComponent(
+            quotedSharing,
+          )}`}
+        >
+          <TwitterIcon />
+          Tweet
+        </ColorButton>
+        {/* <ColorButton id="tweet-quote">
+          <Link href="#" onClick={preventDefault} color="inherit">
+            <TwitterIcon />
+            Tweet
+          </Link>
+        </ColorButton> */}
+        <ColorButton id="new-quote" onClick={getNewQuote}>
+          New Quote
+        </ColorButton>
       </Box>
     </Container>
   );
@@ -136,5 +188,13 @@ function RandomQuoteGenerator() {
     </Provider>
   );
 }
+
+Presentation.propTypes = {
+  getNewQuote: PropTypes.func.isRequired,
+  quote: PropTypes.shape({
+    text: PropTypes.string,
+    author: PropTypes.string,
+  }).isRequired,
+};
 
 export default RandomQuoteGenerator;
